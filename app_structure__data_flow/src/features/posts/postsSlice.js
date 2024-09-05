@@ -1,13 +1,20 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { sub } from "date-fns";
 
 const initialState = [
     {
-        id: 1, title: "Testing Redux Toolkit", content: "I've heard good things about this software"
+        id: 1,
+        title: "Testing Redux Toolkit",
+        content: "I've heard good things about this software",
+        date: sub(new Date(), { minutes: 10 }).toISOString(),
     },
     {
-        id: 2, title: "Slice...", content: "The more I say slice, the more the apple I want"
+        id: 2,
+        title: "Slice...",
+        content: "The more I say slice, the more the apple I want",
+        date: sub(new Date(), { minutes: 10 }).toISOString(),
     },
-]
+];
 
 const postsSlice = createSlice({
     name: "posts",
@@ -15,23 +22,23 @@ const postsSlice = createSlice({
     reducers: {
         postAdded: {
             reducer(state, action) {
-                state.push(action.payload)
+                state.push(action.payload);
             },
             // prepare callback will simplify our posts components
-            prepare(title, content, userId) {
+            prepare(title, content, date, userId) {
                 return {
                     payload: {
                         id: nanoid(),
                         title,
                         content,
-                        userId
-                    }
-                }
-            }
+                        date: new Date().toISOString(),
+                        userId,
+                    },
+                };
+            },
         },
-
-    }
-})
+    },
+});
 
 export const selectAllPosts = (state) => state.posts;
 
